@@ -1,0 +1,3 @@
+Criar um modo na batalha que no meio cada um escolhe uma sequencia de 3 mãos, e ganha pontos quem ganhar cada uma.
+Cada ao clicar na mão, o jogo vai automaticamente entender que o jogador escolheu a próxima carta disponivel.
+Existira uma linha que irá mostrar se a carta foi acertada ou não, se o jogador não clicar e a carta passar a linha, a carta será uma falha

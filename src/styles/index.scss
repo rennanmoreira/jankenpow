@@ -1,0 +1,88 @@
+@import '~@/assets/fonts/Adventure.css';
+@import 'options.scss';
+
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Adventure';
+}
+
+
+// Font 
+.font-red { color: #CC333F; }
+.font-blue { color: #00A0B0; }
+.font-yellow { color: #EDC951; }
+
+
+// Background
+.bg-red { background-color: #CC333F; }
+.bg-blue { background-color: #00A0B0; }
+.bg-yellow { background-color: #EDC951; }
+
+
+// Display
+.d-none { display: none; }
+
+.d-flex {
+  display: flex;
+
+  &.jc-end { justify-content: flex-end; }
+  &.jc-start { justify-content: flex-start; }
+  &.jc-center { justify-content: center; }
+  &.jc-space-evenly { justify-content: space-evenly; }
+  &.jc-space-between { justify-content: space-between; }
+
+  &.ac-center { align-content: center; }
+
+  &.ai-center { align-items: center; }
+}
+
+.d-grid {
+  display: grid;
+}
+
+
+// Position
+.p-absolute { position: absolute; }
+
+@for $i from -20 to 20 { .z-#{$i} { z-index: #{$i}; } }
+
+// Size
+.w-0 { width: 0%; }
+.w-50 { width: 50%; }
+.w-100 { width: 100%; }
+
+.h-0 { height: 0%; }
+.h-50 { height: 50%; }
+.h-100 { height: 100%; }
+.h-inherit { height: inherit !important; }
+
+
+// Font
+.text-white { color: white; }
+
+
+// Spacing
+.no-p { padding: 0 !important; }
+.no-m { margin: 0 !important; }
+
+$i: 0; @while $i <= 200 {
+  .p-#{$i} { padding: #{$i + 'px'}; }
+  .pt-#{$i} { padding-top: #{$i + 'px'}; }
+  .pl-#{$i} { padding-left: #{$i + 'px'}; }
+  .pr-#{$i} { padding-right: #{$i + 'px'}; }
+  .pb-#{$i} { padding-bottom: #{$i + 'px'}; }
+  .pv-#{$i} { padding-top: #{$i + 'px'}; padding-bottom: #{$i + 'px'}; }
+  .ph-#{$i} { padding-left: #{$i + 'px'}; padding-right: #{$i + 'px'}; }
+
+  .m-#{$i} { margin: #{$i + 'px'}; }
+  .mt-#{$i} { margin-top: #{$i + 'px'}; }
+  .ml-#{$i} { margin-left: #{$i + 'px'}; }
+  .mr-#{$i} { margin-right: #{$i + 'px'}; }
+  .mb-#{$i} { margin-bottom: #{$i + 'px'}; }
+  .mv-#{$i} { margin-top: #{$i + 'px'}; margin-bottom: #{$i + 'px'}; }
+  .mh-#{$i} { margin-left: #{$i + 'px'}; margin-right: #{$i + 'px'}; }
+
+  $i: if($i >= 20, $i + 10, $i + 1)
+}

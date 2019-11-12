@@ -1,4 +1,4 @@
-# janken
+# JanKenPow
 
 ## Project setup
 ```
