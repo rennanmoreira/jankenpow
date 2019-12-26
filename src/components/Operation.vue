@@ -1,15 +1,15 @@
 <template>
   <div class="operation-area">
     <div class="controls">
-      <div class="stone">
+      <div class="stone" @click="$emit('touch', 'stone')">
         <span class="option-item img-stone"></span>
         <div class="label">Pedra</div>
       </div>
-      <div class="paper">
+      <div class="paper" @click="$emit('touch', 'paper')">
         <span class="option-item img-paper"></span>
         <div class="label">Papel</div>
       </div>
-      <div class="scissor">
+      <div class="scissor" @click="$emit('touch', 'scissor')">
         <span class="option-item img-scissor"></span>
         <div class="label">Tesoura</div>
       </div>
