@@ -35,7 +35,7 @@
     <Operation @touch="touch($event)"/>
 
     <div class="mini-logo">
-      <div class='start-btn' @click="start">START</div>
+      <div :class="['start-btn', {'disabled': startedBlocked}]" @click="start">{{isStarted ? "RE-START" : "START"}}</div>
       <div class='stop-btn' @click="isStopped = !isStopped">STOP</div>
       <Logo />
     </div>
@@ -53,7 +53,7 @@
 import Operation from '@/components/Operation.vue'
 import Logo from '@/components/Logo.vue'
 
-let dataItem = [
+let initializeItem = () => [
       { type: 'stone', action: 'draw', result: undefined },
       { type: 'scissor', action: 'win', result: undefined },
       { type: 'stone', action: 'lose', result: undefined },
@@ -79,15 +79,19 @@ let dataItem = [
 export default {
   components: { Operation, Logo },
   data: () => ({
-    items: dataItem,
+    items: initializeItem(),
     displayItems: [],
     timesTouched: 0,
     score: 0,
     isStarted: false,
-    isStopped: false
+    startedBlocked: false,
+    isStopped: false,
+    timeout: setTimeout(() => {}, 1500)
   }),
   methods: {
-    delay: ms => new Promise(res => setTimeout(res, ms)),
+    sleep(milliseconds) {
+      return new Promise((resolve) => this.timeout(resolve, milliseconds));
+    },
     touch(event) {
       if (this.timesTouched === this.items.length) return
       
@@ -110,16 +114,25 @@ export default {
       return false
     },
     async start() {
-      this.isStarted = true
-      this.items = dataItem
+      if (this.startedBlocked) return
+
+      this.items = initializeItem()
       this.timesTouched = 0
       this.displayItems = []
       this.score = 0
+      this.isStarted = true
+      this.startedBlocked = true
+      const sleep = ms => new Promise(r => setTimeout(r, ms));
+      let i = 0
 
-      for(let i = 0; i < this.items.length; i++){
-        await this.delay(1500)
+      do {
+        await sleep(1500)
+        console.log('teste '+i)
         this.displayItems.push(this.items[i])
-      }
+        i++
+      } while (i < this.items.length)
+
+      this.startedBlocked = false
     },
     stop(){
 
@@ -148,6 +161,10 @@ export default {
       box-shadow: 0 .2em gray; 
       cursor: pointer;
       width: 110px;
+
+      &.disabled {
+        opacity: 0.4;
+      }
     }
 
     .mini-logo {
@@ -268,4 +285,20 @@ export default {
       width: -webkit-fill-available;
     }
   }
+
+
+  // .blink {
+  //   animation: blink-blinkingFrames 1s steps(5, start);
+  //   -webkit-animation: blink-animation 1s steps(5, start);
+  // }
+  // @keyframes blink-animation {
+  //   0% {opacity: 1.00;}
+  //   50% {opacity: 0.00;}
+  //   100% {opacity: 1.00;}
+  // }
+  // @-webkit-keyframes blink-animation {
+  //   0% {opacity: 1.00;}
+  //   50% {opacity: 0.00;}
+  //   100% {opacity: 1.00;}
+  // }
 </style>
