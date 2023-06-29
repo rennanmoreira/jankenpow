@@ -1,16 +1,16 @@
 <template>
   <div class="operation-area"> 
     <div class="controls">
-      <div class="stone"  @click="touch('stone')">
-        <span class="option-item img-stone"></span>
+      <div class="stone" @click="touchStone">
+        <span :class="['option-item img-stone', {'blink': blinkStone}]"></span>
         <div class="label" >Pedra</div>
       </div>
-      <div class="paper" @click="touch('paper')">
-        <span class="option-item img-paper"></span>
+      <div class="paper" @click="touchPaper">
+        <span :class="['option-item img-paper', {'blink': blinkPaper}]"></span>
         <div class="label">Papel</div>
       </div>
-      <div class="scissor" @click="touch('scissor')">
-        <span class="option-item img-scissor"></span>
+      <div class="scissor" @click="touchScissor">
+        <span :class="['option-item img-scissor', {'blink': blinkScissor}]"></span>
         <div class="label">Tesoura</div>
       </div>
     </div>
@@ -20,22 +20,43 @@
 <script>
 
 export default {
+  
+  data: () => ({
+    blinkStone: false,
+    blinkPaper: false,
+    blinkScissor: false,
+  }),
   methods: {
     touch: function(type) {
       this.$emit('touch', type)
+    },
+    touchPaper() {
+      this.touch('paper')
+      this.blinkPaper = true
+      setTimeout(() => { this.blinkPaper = false }, 100)
+    },
+    touchStone() {
+      this.touch('stone')
+      this.blinkStone = true
+      setTimeout(() => { this.blinkStone = false }, 100)
+    },
+    touchScissor() {
+      this.touch('scissor')
+      this.blinkScissor = true
+      setTimeout(() => { this.blinkScissor = false }, 100)
     }
   },
   mounted () {
     window.addEventListener('keyup', event => {
       switch (event.key) {
         case "ArrowLeft":
-          this.touch('paper')
+          this.touchPaper()
           break
         case "ArrowUp":
-          this.touch('stone')
+          this.touchStone()
           break
         case "ArrowRight": 
-          this.touch('scissor')
+          this.touchScissor()
           break
     }
     });
