@@ -35,8 +35,8 @@
     <Operation @touch="touch($event)"/>
 
     <div class="mini-logo">
-      <div :class="['start-btn', {'disabled': startedBlocked}]" @click="start">{{isStarted ? "RE-START" : "START"}}</div>
-      <div class='stop-btn' @click="isStopped = !isStopped">STOP</div>
+      <div :class="['start-btn', {'disabled': startedBlocked}]" @click="start">{{isStarted ? "REINICIAR" : "INICIAR"}}</div>
+      <div class='stop-btn' @click="isStopped = !isStopped">{{isStopped ? "CONTINUAR" : "PAUSAR"}}</div>
       <Logo />
     </div>
 <!-- 
@@ -86,12 +86,8 @@ export default {
     isStarted: false,
     startedBlocked: false,
     isStopped: false,
-    timeout: setTimeout(() => {}, 1500)
   }),
   methods: {
-    sleep(milliseconds) {
-      return new Promise((resolve) => this.timeout(resolve, milliseconds));
-    },
     touch(event) {
       if (this.timesTouched === this.items.length) return
       
@@ -222,6 +218,8 @@ export default {
         width: 100%;
         position: absolute;
         animation: slide 10s linear;
+        animation-play-state: running;
+
 
         .option-item-result {
           width: 100%;
