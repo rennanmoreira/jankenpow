@@ -11,10 +11,16 @@
       </div> -->
       <!-- <div class="scroll-items"> -->
         <div
-          v-for="({type, action}, index) in displayItems"
+          v-for="({type, action, result}, index) in displayItems"
           :key="`item${index}`"
           :id="`item${index}`"
-          :class="`option-item dark img-${type} bg-${action} mv-10`">
+          :class="[`option-item dark img-${type} bg-${action} mv-10`, {'stopped': isStopped }]">
+          <div v-if="result != undefined" class="option-item-result">
+            <div class="option-item-result-background"></div>
+            <div :class="`option-item-result-label result-${result}`">
+              {{result ? "acertou" : "errou"}}
+            </div>
+          </div>
         </div>
       </div>
     <!-- </div> -->
@@ -28,12 +34,16 @@
 
     <Operation @touch="touch($event)"/>
 
-    <Logo class="mini-logo"/>
-
+    <div class="mini-logo">
+      <div class='start-btn' @click="start">START</div>
+      <div class='stop-btn' @click="isStopped = !isStopped">STOP</div>
+      <Logo />
+    </div>
+<!-- 
     <div :class="['initial-page', {'hide': isStarted}]" >
       <Logo class="logo"/>
       <span class='start-btn' @click="start">START</span>
-    </div>
+    </div> -->
     
   </div>
   
@@ -43,35 +53,38 @@
 import Operation from '@/components/Operation.vue'
 import Logo from '@/components/Logo.vue'
 
+let dataItem = [
+      { type: 'stone', action: 'draw', result: undefined },
+      { type: 'scissor', action: 'win', result: undefined },
+      { type: 'stone', action: 'lose', result: undefined },
+      { type: 'scissor', action: 'win', result: undefined },
+      { type: 'paper', action: 'lose', result: undefined },
+      { type: 'paper', action: 'win', result: undefined },
+      { type: 'scissor', action: 'draw', result: undefined },
+      { type: 'paper', action: 'win', result: undefined },
+      { type: 'stone', action: 'lose', result: undefined },
+      { type: 'stone', action: 'draw', result: undefined },
+      { type: 'stone', action: 'draw', result: undefined },
+      { type: 'scissor', action: 'win', result: undefined },
+      { type: 'stone', action: 'lose', result: undefined },
+      { type: 'scissor', action: 'win', result: undefined },
+      { type: 'paper', action: 'lose', result: undefined },
+      { type: 'paper', action: 'win', result: undefined },
+      { type: 'scissor', action: 'draw', result: undefined },
+      { type: 'paper', action: 'win', result: undefined },
+      { type: 'stone', action: 'lose', result: undefined },
+      { type: 'stone', action: 'draw', result: undefined },
+]
+
 export default {
   components: { Operation, Logo },
   data: () => ({
-    items: [
-      { type: 'stone', action: 'draw', result: undefined },
-      { type: 'scissor', action: 'win', result: undefined },
-      { type: 'stone', action: 'lose', result: undefined },
-      { type: 'scissor', action: 'win', result: undefined },
-      { type: 'paper', action: 'lose', result: undefined },
-      { type: 'paper', action: 'win', result: undefined },
-      { type: 'scissor', action: 'draw', result: undefined },
-      { type: 'paper', action: 'win', result: undefined },
-      { type: 'stone', action: 'lose', result: undefined },
-      { type: 'stone', action: 'draw', result: undefined },
-      { type: 'stone', action: 'draw', result: undefined },
-      { type: 'scissor', action: 'win', result: undefined },
-      { type: 'stone', action: 'lose', result: undefined },
-      { type: 'scissor', action: 'win', result: undefined },
-      { type: 'paper', action: 'lose', result: undefined },
-      { type: 'paper', action: 'win', result: undefined },
-      { type: 'scissor', action: 'draw', result: undefined },
-      { type: 'paper', action: 'win', result: undefined },
-      { type: 'stone', action: 'lose', result: undefined },
-      { type: 'stone', action: 'draw', result: undefined },
-    ],
+    items: dataItem,
     displayItems: [],
     timesTouched: 0,
     score: 0,
-    isStarted: false
+    isStarted: false,
+    isStopped: false
   }),
   methods: {
     delay: ms => new Promise(res => setTimeout(res, ms)),
@@ -98,13 +111,18 @@ export default {
     },
     async start() {
       this.isStarted = true
-
+      this.items = dataItem
       this.timesTouched = 0
       this.displayItems = []
+      this.score = 0
+
       for(let i = 0; i < this.items.length; i++){
         await this.delay(1500)
         this.displayItems.push(this.items[i])
       }
+    },
+    stop(){
+
     }
   }
 }
@@ -114,6 +132,23 @@ export default {
   .classic {
     height: 100%;
     background-color: #FCFCFC;
+
+    .start-btn, .stop-btn{
+      text-align: center;
+      margin:15px;
+      font-weight: bold;
+      padding: 10px 10px 10px 10px ;
+      background-color: lightgray;
+      text-shadow: -1px -1px black, 1px 1px white;
+      color: gray;
+      -webkit-border-radius: 7px;
+      -moz-border-radius: 7px;
+      -o-border-radius: 7px;
+      border-radius: 7px;
+      box-shadow: 0 .2em gray; 
+      cursor: pointer;
+      width: 110px;
+    }
 
     .mini-logo {
       position: absolute;
@@ -140,23 +175,6 @@ export default {
         top: 100%;
         animation: slide 0.5s linear;
       }
-
-      .start-btn{
-        text-align: center;
-        margin:15px;
-        font-weight: bold;
-        padding: 10px 10px 10px 10px ;
-        background-color: lightgray;
-        text-shadow: -1px -1px black, 1px 1px white;
-        color: gray;
-        -webkit-border-radius: 7px;
-        -moz-border-radius: 7px;
-        -o-border-radius: 7px;
-        border-radius: 7px;
-        box-shadow: 0 .2em gray; 
-        cursor: pointer;
-        width: 110px;
-      }
     }
 
     .scroll-area {
@@ -182,10 +200,54 @@ export default {
       // }
 
       .option-item {
-        // top: 0%;
+        // top: 0%;        
+        border-radius: 50px;
         width: 100%;
         position: absolute;
-        animation: slide 8s linear;
+        animation: slide 10s linear;
+
+        .option-item-result {
+          width: 100%;
+          height: 100%;
+          border-radius: 50px;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .option-item-result-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50px;
+            opacity: 0.7;
+            background-color: black;
+          }
+          
+          .option-item-result-label {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 1;
+            font-size: 18px;
+          }
+          .result-true {
+            color: #23b926;
+          }
+
+          .result-false {
+            color: #ee5f5b;
+          }
+
+        }
+
+
+      }
+      
+      .stopped {
+        animation-play-state: paused;
       }
 
       @keyframes slide {
