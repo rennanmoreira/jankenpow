@@ -135,9 +135,9 @@ export default {
 
     .start-btn, .stop-btn{
       text-align: center;
-      margin:15px;
+      margin:15px 2px;
       font-weight: bold;
-      padding: 10px 10px 10px 10px ;
+      padding: 5px 0px;
       background-color: lightgray;
       text-shadow: -1px -1px black, 1px 1px white;
       color: gray;
